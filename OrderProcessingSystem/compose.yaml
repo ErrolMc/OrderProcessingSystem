@@ -4,4 +4,6 @@
     build:
       context: .
       dockerfile: OrderService/Dockerfile
+    ports:
+      - "8080:8080"
 
