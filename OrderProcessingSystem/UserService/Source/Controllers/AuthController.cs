@@ -44,7 +44,7 @@ namespace OPS.UserService.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(request.Username);
+            User user = await _userRepository.GetUserByUsernameAsync(request.Username);
 
             if (user is null || !_authService.ValidatePassword(request.Password, user.PasswordHash))
                 return Unauthorized("Invalid username or password");

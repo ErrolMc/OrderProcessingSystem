@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OPS.UserService.Data;
 using OPS.UserService.Repositories;
 
 namespace OPS.UserService.Controllers
@@ -17,7 +18,7 @@ namespace OPS.UserService.Controllers
         [HttpGet("getuserfromid")]
         public async Task<IActionResult> GetUserFromID([FromBody] string userID)
         {
-            var user = await _userRepository.GetUserByIdAsync(userID);
+            User user = await _userRepository.GetUserByIdAsync(userID);
             
             if (user is null)
                 return NotFound($"Cant find user with id {userID}");
@@ -28,7 +29,7 @@ namespace OPS.UserService.Controllers
         [HttpGet("getuserfromname")]
         public async Task<IActionResult> GetUserFromUsername([FromBody] string username)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
+            User user = await _userRepository.GetUserByUsernameAsync(username);
             
             if (user is null)
                 return NotFound($"Cant find user with name {username}");

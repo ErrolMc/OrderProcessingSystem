@@ -1,3 +1,4 @@
+using OPS.Shared;
 using OPS.UserService.Repositories;
 using OPS.UserService.Repositories.Concrete;
 using OPS.UserService.Services;
@@ -18,7 +19,11 @@ namespace OPS.UserService
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-        
+
+            // Configure MongoDB
+            services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
+            
+            // Register services
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<IAuthService, AuthService>();
 

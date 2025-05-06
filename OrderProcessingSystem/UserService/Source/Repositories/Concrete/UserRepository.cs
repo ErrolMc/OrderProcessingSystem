@@ -1,22 +1,42 @@
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using OPS.Shared;
 using OPS.UserService.Data;
 
 namespace OPS.UserService.Repositories.Concrete
 {
     public class UserRepository : IUserRepository
     {
-        public Task<User> GetUserByIdAsync(string id)
+        private readonly IMongoCollection<User> _users;
+
+        public UserRepository(IOptions<MongoDbSettings> mongoSettings)
         {
-            throw new NotImplementedException();
+            MongoClient client = new MongoClient(mongoSettings.Value.ConnectionString);
+            IMongoDatabase database = client.GetDatabase(mongoSettings.Value.DatabaseName);
+            _users = database.GetCollection<User>("Users");
         }
 
-        public Task<User> GetUserByUsernameAsync(string username)
+        public async Task<User> GetUserByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _users.Find(u => u.ID == id).FirstOrDefaultAsync();
         }
 
-        public Task<bool> CreateUserAsync(User user)
+        public async Task<User> GetUserByUsernameAsync(string username)
         {
-            throw new NotImplementedException();
+            return await _users.Find(u => u.Username == username).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> CreateUserAsync(User user)
+        {
+            try
+            {
+                await _users.InsertOneAsync(user);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
