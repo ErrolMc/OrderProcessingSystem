@@ -36,5 +36,19 @@ namespace OPS.UserService.Controllers
             
             return Ok(user.ToUserDto());
         }
+        
+        [HttpDelete("deleteuserfromid")]
+        public async Task<IActionResult> DeleteUserFromID([FromBody] string userID)
+        {
+            User user = await _userRepository.GetUserByIdAsync(userID);
+            if (user is null)
+                return NotFound($"Cant find user with id {userID}");
+
+            bool result = await _userRepository.DeleteUserAsync(userID);
+            if (!result)
+                return NotFound($"Error deleting user with id {userID}");
+            
+            return Ok($"Deleted user {userID}");
+        }
     }
 }

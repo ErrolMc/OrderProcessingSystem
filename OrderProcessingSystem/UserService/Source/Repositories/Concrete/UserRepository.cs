@@ -38,5 +38,18 @@ namespace OPS.UserService.Repositories.Concrete
                 return false;
             }
         }
+
+        public async Task<bool> DeleteUserAsync(string id)
+        {
+            try
+            {
+                DeleteResult res = await _users.DeleteOneAsync(u => u.ID == id);
+                return res.DeletedCount == 1;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
