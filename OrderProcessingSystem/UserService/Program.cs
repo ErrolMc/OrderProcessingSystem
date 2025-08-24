@@ -1,4 +1,5 @@
 using OPS.Shared;
+using OPS.Shared.Exceptions.Handlers;
 using OPS.UserService.Repositories;
 using OPS.UserService.Repositories.Concrete;
 using OPS.UserService.Services;
@@ -26,6 +27,11 @@ namespace OPS.UserService
             // Register services
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<IAuthService, AuthService>();
+            
+            // Exception handling
+            services.AddProblemDetails();
+            services.AddExceptionHandler<MongoExceptionHandler>();
+            services.AddExceptionHandler<FallbackExceptionHandler>();
 
             WebApplication app = builder.Build();
 
@@ -35,6 +41,8 @@ namespace OPS.UserService
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseExceptionHandler();
 
             app.UseHttpsRedirection();
             app.UseAuthorization();

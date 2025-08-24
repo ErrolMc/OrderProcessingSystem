@@ -33,10 +33,9 @@ namespace OPS.UserService.Controllers
                 Username = request.Username,
                 PasswordHash = _authService.HashPassword(request.Password),
             };
-            
-            if (!await _userRepository.CreateUserAsync(user))
-                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to create user. Please try again later.");
-            
+
+            await _userRepository.CreateUserAsync(user);
+
             _logger.LogInformation($"User {user.Username} registered");
             return Ok("User created");
         }

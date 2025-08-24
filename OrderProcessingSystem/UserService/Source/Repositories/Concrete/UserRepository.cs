@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using OPS.Shared;
+using OPS.Shared.Constants;
 using OPS.UserService.Data;
 
 namespace OPS.UserService.Repositories.Concrete
@@ -11,9 +12,9 @@ namespace OPS.UserService.Repositories.Concrete
 
         public UserRepository(IOptions<MongoDbSettings> mongoSettings)
         {
-            MongoClient client = new MongoClient(mongoSettings.Value.ConnectionString);
+            var client = new MongoClient(mongoSettings.Value.ConnectionString);
             IMongoDatabase database = client.GetDatabase(mongoSettings.Value.DatabaseName);
-            _users = database.GetCollection<User>("Users");
+            _users = database.GetCollection<User>(TableNames.USERS_TABLE_NAME);
         }
 
         public async Task<User> GetUserByIdAsync(string id)
@@ -26,30 +27,15 @@ namespace OPS.UserService.Repositories.Concrete
             return await _users.Find(u => u.Username == username).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> CreateUserAsync(User user)
+        public async Task CreateUserAsync(User user)
         {
-            try
-            {
-                await _users.InsertOneAsync(user);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            await _users.InsertOneAsync(user);
         }
 
         public async Task<bool> DeleteUserAsync(string id)
         {
-            try
-            {
-                DeleteResult res = await _users.DeleteOneAsync(u => u.ID == id);
-                return res.DeletedCount == 1;
-            }
-            catch
-            {
-                return false;
-            }
+            DeleteResult res = await _users.DeleteOneAsync(u => u.ID == id);
+            return res.IsAcknowledged && res.DeletedCount > 0;
         }
     }
 }

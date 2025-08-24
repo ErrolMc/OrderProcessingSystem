@@ -1,4 +1,4 @@
-namespace OPS.Shared
+namespace OPS.Shared.DTOs
 {
     public class UserDto
     {

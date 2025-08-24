@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using OPS.Shared;
+using OPS.Shared.DTOs;
 
 namespace OPS.UserService.Data
 {

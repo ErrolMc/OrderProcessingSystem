@@ -6,7 +6,7 @@ namespace OPS.UserService.Repositories
     {
         public Task<User> GetUserByIdAsync(string id);
         public Task<User> GetUserByUsernameAsync(string username);
-        public Task<bool> CreateUserAsync(User user);
+        public Task CreateUserAsync(User user);
         public Task<bool> DeleteUserAsync(string id);
     }
 }
