@@ -1,6 +1,7 @@
 using OPS.InventoryService.Repositories.Concrete;
 using OPS.InventoryService.Source.Repositories;
 using OPS.Shared;
+using OPS.Shared.Exceptions.Handlers;
 
 namespace OPS.InventoryService
 {
@@ -25,6 +26,11 @@ namespace OPS.InventoryService
             services.AddScoped<IInventoryRepository, InventoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             
+            // Exception handling
+            services.AddProblemDetails();
+            services.AddExceptionHandler<MongoExceptionHandler>();
+            services.AddExceptionHandler<FallbackExceptionHandler>();
+            
             WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +40,8 @@ namespace OPS.InventoryService
                 app.UseSwaggerUI();
             }
 
+            app.UseExceptionHandler();
+            
             app.UseHttpsRedirection();
             app.UseAuthorization();
         

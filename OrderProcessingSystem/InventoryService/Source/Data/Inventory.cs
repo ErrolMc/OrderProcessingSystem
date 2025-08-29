@@ -31,4 +31,3 @@ namespace OPS.InventoryService.Data
         public DateTime UpdatedAt { get; set; }
     }
 }
-

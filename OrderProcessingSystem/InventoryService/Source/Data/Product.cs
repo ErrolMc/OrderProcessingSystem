@@ -18,8 +18,8 @@ namespace OPS.InventoryService.Data
         [BsonElement("description")]
         public string Description { get; set; }
         
-        [BsonElement("priceaud")]
-        public double PriceAUD { get; set; }
+        [BsonElement("pricedollars")]
+        public double PriceDollars { get; set; }
         
         [BsonElement("createdat")]
         public DateTime CreatedAt { get; set; }
